@@ -1,8 +1,13 @@
 package pl.refactoring.interpreter.legacy;
 
+import org.jetbrains.annotations.NotNull;
+import pl.refactoring.interpreter.legacy.specs.BelowAreaSpec;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Copyright (c) 2020 IT Train Wlodzimierz Krakowski (www.refactoring.pl)
@@ -16,14 +21,14 @@ public class RealEstateFinder {
     }
 
     public List<RealEstate> byBelowArea(float maxBuildingArea){
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (estate.getBuildingArea() < maxBuildingArea)
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
+        return bySpec(new BelowAreaSpec(maxBuildingArea));
+    }
+
+    @NotNull
+    private List<RealEstate> bySpec(Spec spec) {
+        return repository.stream()
+                .filter(spec::isSatisfiedBy)
+                .collect(toList());
     }
 
     public List<RealEstate> byMaterial(EstateMaterial material){
@@ -44,7 +49,7 @@ public class RealEstateFinder {
         Iterator<RealEstate> estates = repository.iterator();
         while (estates.hasNext()) {
             RealEstate estate = estates.next();
-            if (estate.getMaterial().equals(material) && estate.getBuildingArea() < maxBuildingArea)
+            if (estate.getMaterial().equals(material) && new BelowAreaSpec(maxBuildingArea).isSatisfiedBy(estate))
                 foundRealEstates.add(estate);
         }
         return foundRealEstates;
