@@ -1,6 +1,7 @@
 package pl.refactoring.interpreter.legacy;
 
 import org.jetbrains.annotations.NotNull;
+import pl.refactoring.interpreter.legacy.specs.AndSpec;
 import pl.refactoring.interpreter.legacy.specs.BelowAreaSpec;
 import pl.refactoring.interpreter.legacy.specs.MaterialSpec;
 
@@ -29,23 +30,16 @@ public class RealEstateFinder {
         return bySpec(new MaterialSpec(material));
     }
 
+    public List<RealEstate> byMaterialBelowArea(EstateMaterial material, float maxBuildingArea){
+        Spec andSpec = new AndSpec(new MaterialSpec(material), new BelowAreaSpec(maxBuildingArea));
+        return bySpec(andSpec);
+    }
+
     @NotNull
     private List<RealEstate> bySpec(Spec spec) {
         return repository.stream()
                 .filter(spec::isSatisfiedBy)
                 .collect(toList());
-    }
-
-    public List<RealEstate> byMaterialBelowArea(EstateMaterial material, float maxBuildingArea){
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (new MaterialSpec(material).isSatisfiedBy(estate) && new BelowAreaSpec(maxBuildingArea).isSatisfiedBy(estate))
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
     }
 
     public List<RealEstate> byPlacement(EstatePlacement placement){
