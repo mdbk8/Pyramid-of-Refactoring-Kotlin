@@ -43,23 +43,15 @@ public class RealEstateFinder {
         return bySpec(notSpec);
     }
 
+    public List<RealEstate> byAreaRange(float minArea, float maxArea) {
+        return bySpec(new BetweenAreaSpec(minArea, maxArea));
+    }
+
     @NotNull
     private List<RealEstate> bySpec(Spec spec) {
         return repository.stream()
                 .filter(spec::isSatisfiedBy)
                 .collect(toList());
-    }
-
-    public List<RealEstate> byAreaRange(float minArea, float maxArea){
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (estate.getBuildingArea() >= minArea && estate.getBuildingArea() <= maxArea)
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
     }
 
     public List<RealEstate> byType(EstateType type){
