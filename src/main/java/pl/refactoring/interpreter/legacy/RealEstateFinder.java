@@ -47,6 +47,10 @@ public class RealEstateFinder {
         return bySpec(new BetweenAreaSpec(minArea, maxArea));
     }
 
+    public List<RealEstate> byType(EstateType type) {
+        return bySpec(new TypeSpec(type));
+    }
+
     @NotNull
     private List<RealEstate> bySpec(Spec spec) {
         return repository.stream()
@@ -54,25 +58,13 @@ public class RealEstateFinder {
                 .collect(toList());
     }
 
-    public List<RealEstate> byType(EstateType type){
+    public List<RealEstate> byVerySpecificCriteria(EstateType type, EstatePlacement placement, EstateMaterial material) {
         List<RealEstate> foundRealEstates = new ArrayList<>();
 
         Iterator<RealEstate> estates = repository.iterator();
         while (estates.hasNext()) {
             RealEstate estate = estates.next();
-            if (estate.getType().equals(type))
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
-    }
-
-    public List<RealEstate> byVerySpecificCriteria(EstateType type, EstatePlacement placement, EstateMaterial material){
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (estate.getType().equals(type) && new PlacementSpec(placement).isSatisfiedBy(estate) && new MaterialSpec(material).isSatisfiedBy(estate))
+            if (new TypeSpec(type).isSatisfiedBy(estate) && new PlacementSpec(placement).isSatisfiedBy(estate) && new MaterialSpec(material).isSatisfiedBy(estate))
                 foundRealEstates.add(estate);
         }
         return foundRealEstates;

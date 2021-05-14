@@ -1,9 +1,6 @@
 package pl.refactoring.interpreter.legacy.specs
 
-import pl.refactoring.interpreter.legacy.EstateMaterial
-import pl.refactoring.interpreter.legacy.EstatePlacement
-import pl.refactoring.interpreter.legacy.RealEstate
-import pl.refactoring.interpreter.legacy.Spec
+import pl.refactoring.interpreter.legacy.*
 
 class BelowAreaSpec(private val maxBuildingArea: Float) : Spec {
 
@@ -11,7 +8,7 @@ class BelowAreaSpec(private val maxBuildingArea: Float) : Spec {
         estate.buildingArea < maxBuildingArea
 }
 
-class MaterialSpec(private val material: EstateMaterial): Spec {
+class MaterialSpec(private val material: EstateMaterial) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.material == this.material
@@ -39,4 +36,10 @@ class BetweenAreaSpec(private val minArea: Float, private val maxArea: Float) : 
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.buildingArea in minArea..maxArea
+}
+
+class TypeSpec(private val type: EstateType) : Spec {
+
+    override fun isSatisfiedBy(estate: RealEstate): Boolean =
+        estate.type == type
 }
