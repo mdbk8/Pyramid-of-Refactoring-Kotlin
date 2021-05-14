@@ -1,10 +1,7 @@
 package pl.refactoring.interpreter.legacy;
 
 import org.jetbrains.annotations.NotNull;
-import pl.refactoring.interpreter.legacy.specs.AndSpec;
-import pl.refactoring.interpreter.legacy.specs.BelowAreaSpec;
-import pl.refactoring.interpreter.legacy.specs.MaterialSpec;
-import pl.refactoring.interpreter.legacy.specs.PlacementSpec;
+import pl.refactoring.interpreter.legacy.specs.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,23 +37,17 @@ public class RealEstateFinder {
         return bySpec(new PlacementSpec(placement));
     }
 
+    public List<RealEstate> byAvoidingPlacement(EstatePlacement placement) {
+        Spec notSpec = new NotSpec(new PlacementSpec(placement));
+
+        return bySpec(notSpec);
+    }
+
     @NotNull
     private List<RealEstate> bySpec(Spec spec) {
         return repository.stream()
                 .filter(spec::isSatisfiedBy)
                 .collect(toList());
-    }
-
-    public List<RealEstate> byAvoidingPlacement(EstatePlacement placement){
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (!new PlacementSpec(placement).isSatisfiedBy(estate))
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
     }
 
     public List<RealEstate> byAreaRange(float minArea, float maxArea){

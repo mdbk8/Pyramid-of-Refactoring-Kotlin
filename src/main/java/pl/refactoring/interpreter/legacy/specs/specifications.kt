@@ -28,3 +28,9 @@ class PlacementSpec(private val placement: EstatePlacement) : Spec {
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.placement == placement
 }
+
+class NotSpec(private val placementSpec: Spec) : Spec {
+
+    override fun isSatisfiedBy(estate: RealEstate): Boolean =
+        placementSpec.isSatisfiedBy(estate).not()
+}
