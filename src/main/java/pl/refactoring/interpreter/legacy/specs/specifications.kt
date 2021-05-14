@@ -38,5 +38,5 @@ class NotSpec(private val placementSpec: Spec) : Spec {
 class BetweenAreaSpec(private val minArea: Float, private val maxArea: Float) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
-        estate.buildingArea >= minArea && estate.buildingArea <= maxArea
+        estate.buildingArea in minArea..maxArea
 }
