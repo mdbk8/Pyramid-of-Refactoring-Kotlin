@@ -28,7 +28,7 @@ public class RealEstateFinder {
     }
 
     public List<RealEstate> byMaterialBelowArea(EstateMaterial material, float maxBuildingArea) {
-        Spec andSpec = AndSpec.builder()
+        Spec andSpec = new AndSpec.Builder()
                 .withSpec(ofMaterial(material))
                 .withSpec(belowArea(maxBuildingArea))
                 .build();
@@ -53,7 +53,7 @@ public class RealEstateFinder {
     }
 
     public List<RealEstate> byTypePlacementAndMaterial(EstateType type, EstatePlacement placement, EstateMaterial material) {
-        AndSpec spec = AndSpec.builder()
+        AndSpec spec = new AndSpec.Builder()
                 .withSpec(ofType(type))
                 .withSpec(placedIn(placement))
                 .withSpec(ofMaterial(material))

@@ -14,30 +14,6 @@ class MaterialSpec internal constructor(private val material: EstateMaterial) : 
         estate.material == this.material
 }
 
-// FIXME: 16/05/2021 figure out why constructor can't be private
-class AndSpec(private vararg val specs: Spec) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun builder() = AndSpecBuilder()
-    }
-
-    class AndSpecBuilder {
-
-        private val specs: MutableList<Spec> = mutableListOf()
-
-        fun withSpec(spec: Spec): AndSpecBuilder {
-            specs.add(spec)
-            return this
-        }
-
-        fun build() = AndSpec(*specs.toTypedArray())
-    }
-
-    override fun isSatisfiedBy(estate: RealEstate): Boolean =
-        specs.filterNot { it.isSatisfiedBy(estate) }.isEmpty()
-}
-
 class PlacementSpec internal constructor(private val placement: EstatePlacement) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
@@ -60,4 +36,17 @@ class TypeSpec internal constructor(private val type: EstateType) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.type == type
+}
+
+class AndSpec private constructor(private vararg val specs: Spec) : Spec {
+
+    override fun isSatisfiedBy(estate: RealEstate): Boolean =
+        specs.filterNot { it.isSatisfiedBy(estate) }.isEmpty()
+
+    data class Builder(private val specs: MutableList<Spec> = mutableListOf()) {
+
+        fun withSpec(spec: Spec): Builder = apply { specs.add(spec) }
+
+        fun build() = AndSpec(*specs.toTypedArray())
+    }
 }
