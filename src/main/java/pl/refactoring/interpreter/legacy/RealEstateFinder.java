@@ -6,12 +6,7 @@ import pl.refactoring.interpreter.legacy.specs.AndSpec;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static pl.refactoring.interpreter.legacy.specs.Specs.ofAreaRange;
-import static pl.refactoring.interpreter.legacy.specs.Specs.not;
-import static pl.refactoring.interpreter.legacy.specs.Specs.placedIn;
-import static pl.refactoring.interpreter.legacy.specs.Specs.belowArea;
-import static pl.refactoring.interpreter.legacy.specs.Specs.ofMaterial;
-import static pl.refactoring.interpreter.legacy.specs.Specs.ofType;
+import static pl.refactoring.interpreter.legacy.specs.Specs.*;
 
 /**
  * Copyright (c) 2020 IT Train Wlodzimierz Krakowski (www.refactoring.pl)
@@ -33,7 +28,11 @@ public class RealEstateFinder {
     }
 
     public List<RealEstate> byMaterialBelowArea(EstateMaterial material, float maxBuildingArea) {
-        Spec andSpec = new AndSpec(ofMaterial(material), belowArea(maxBuildingArea));
+        Spec andSpec = AndSpec.builder()
+                .withSpec(ofMaterial(material))
+                .withSpec(belowArea(maxBuildingArea))
+                .build();
+
         return bySpec(andSpec);
     }
 
@@ -54,11 +53,13 @@ public class RealEstateFinder {
     }
 
     public List<RealEstate> byTypePlacementAndMaterial(EstateType type, EstatePlacement placement, EstateMaterial material) {
-        return bySpec(new AndSpec(
-                ofType(type),
-                placedIn(placement),
-                ofMaterial(material))
-        );
+        AndSpec spec = AndSpec.builder()
+                .withSpec(ofType(type))
+                .withSpec(placedIn(placement))
+                .withSpec(ofMaterial(material))
+                .build();
+
+        return bySpec(spec);
     }
 
     @NotNull

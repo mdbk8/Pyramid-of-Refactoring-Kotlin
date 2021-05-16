@@ -14,7 +14,10 @@ internal class AndSpecTest {
     fun `returns true for two successful Specs`() {
         val firstSpec = SuccessfulSpec()
         val secondSpec = SuccessfulSpec()
-        val underTest = AndSpec(firstSpec, secondSpec)
+        val underTest = AndSpec.builder()
+            .withSpec(firstSpec)
+            .withSpec(secondSpec)
+            .build()
 
         val actualResult = underTest.isSatisfiedBy(estateMock)
 
@@ -28,7 +31,11 @@ internal class AndSpecTest {
         val firstSpec = SuccessfulSpec()
         val secondSpec = SuccessfulSpec()
         val thirdSpec = SuccessfulSpec()
-        val underTest = AndSpec(firstSpec, secondSpec, thirdSpec)
+        val underTest = AndSpec.builder()
+            .withSpec(firstSpec)
+            .withSpec(secondSpec)
+            .withSpec(thirdSpec)
+            .build()
 
         val actualResult = underTest.isSatisfiedBy(estateMock)
 
@@ -43,7 +50,11 @@ internal class AndSpecTest {
         val firstSpec = SuccessfulSpec()
         val secondSpec = UnsuccessfulSpec()
         val thirdSpec = SuccessfulSpec()
-        val underTest = AndSpec(firstSpec, secondSpec, thirdSpec)
+        val underTest = AndSpec.builder()
+            .withSpec(firstSpec)
+            .withSpec(secondSpec)
+            .withSpec(thirdSpec)
+            .build()
 
         val actualResult = underTest.isSatisfiedBy(estateMock)
 
