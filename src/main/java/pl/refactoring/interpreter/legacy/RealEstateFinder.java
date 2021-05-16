@@ -3,8 +3,6 @@ package pl.refactoring.interpreter.legacy;
 import org.jetbrains.annotations.NotNull;
 import pl.refactoring.interpreter.legacy.specs.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -51,22 +49,18 @@ public class RealEstateFinder {
         return bySpec(new TypeSpec(type));
     }
 
+    public List<RealEstate> byTypePlacementAndMaterial(EstateType type, EstatePlacement placement, EstateMaterial material) {
+        Spec typeSpec = new TypeSpec(type);
+        Spec placementSpec = new PlacementSpec(placement);
+        Spec materialSpec = new MaterialSpec(material);
+
+        return bySpec(new AndSpec(typeSpec, placementSpec, materialSpec));
+    }
+
     @NotNull
     private List<RealEstate> bySpec(Spec spec) {
         return repository.stream()
                 .filter(spec::isSatisfiedBy)
                 .collect(toList());
-    }
-
-    public List<RealEstate> byVerySpecificCriteria(EstateType type, EstatePlacement placement, EstateMaterial material) {
-        List<RealEstate> foundRealEstates = new ArrayList<>();
-
-        Iterator<RealEstate> estates = repository.iterator();
-        while (estates.hasNext()) {
-            RealEstate estate = estates.next();
-            if (new TypeSpec(type).isSatisfiedBy(estate) && new PlacementSpec(placement).isSatisfiedBy(estate) && new MaterialSpec(material).isSatisfiedBy(estate))
-                foundRealEstates.add(estate);
-        }
-        return foundRealEstates;
     }
 }

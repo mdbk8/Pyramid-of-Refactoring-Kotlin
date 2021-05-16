@@ -14,10 +14,10 @@ class MaterialSpec(private val material: EstateMaterial) : Spec {
         estate.material == this.material
 }
 
-class AndSpec(private val materialSpec: Spec, private val belowAreaSpec: Spec) : Spec {
+class AndSpec(private vararg val specs: Spec) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
-        materialSpec.isSatisfiedBy(estate) && belowAreaSpec.isSatisfiedBy(estate)
+        specs.filterNot { it.isSatisfiedBy(estate) }.isEmpty()
 }
 
 class PlacementSpec(private val placement: EstatePlacement) : Spec {
