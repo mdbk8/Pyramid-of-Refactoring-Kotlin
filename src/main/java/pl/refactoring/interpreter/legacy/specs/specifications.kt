@@ -2,24 +2,13 @@ package pl.refactoring.interpreter.legacy.specs
 
 import pl.refactoring.interpreter.legacy.*
 
-class BelowAreaSpec private constructor(private val maxBuildingArea: Float) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun belowArea(maxBuildingArea: Float) = BelowAreaSpec(maxBuildingArea)
-    }
+class BelowAreaSpec internal constructor(private val maxBuildingArea: Float) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.buildingArea < maxBuildingArea
 }
 
-class MaterialSpec private constructor(private val material: EstateMaterial) : Spec {
-
-    companion object {
-
-        @JvmStatic
-        fun ofMaterial(material: EstateMaterial) = MaterialSpec(material)
-    }
+class MaterialSpec internal constructor(private val material: EstateMaterial) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.material == this.material
@@ -31,45 +20,25 @@ class AndSpec(private vararg val specs: Spec) : Spec {
         specs.filterNot { it.isSatisfiedBy(estate) }.isEmpty()
 }
 
-class PlacementSpec private constructor(private val placement: EstatePlacement) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun placedIn(placement: EstatePlacement) = PlacementSpec(placement)
-    }
+class PlacementSpec internal constructor(private val placement: EstatePlacement) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.placement == placement
 }
 
-class NotSpec private constructor(private val spec: Spec) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun not(spec: Spec) = NotSpec(spec)
-    }
+class NotSpec internal constructor(private val spec: Spec) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         spec.isSatisfiedBy(estate).not()
 }
 
-class BetweenAreaSpec private constructor(private val minArea: Float, private val maxArea: Float) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun ofAreaRange(minArea: Float, maxArea: Float) = BetweenAreaSpec(minArea, maxArea)
-    }
+class BetweenAreaSpec internal constructor(private val minArea: Float, private val maxArea: Float) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.buildingArea in minArea..maxArea
 }
 
-class TypeSpec private constructor(private val type: EstateType) : Spec {
-
-    companion object {
-        @JvmStatic
-        fun ofType(type: EstateType) = TypeSpec(type)
-    }
+class TypeSpec internal constructor(private val type: EstateType) : Spec {
 
     override fun isSatisfiedBy(estate: RealEstate): Boolean =
         estate.type == type

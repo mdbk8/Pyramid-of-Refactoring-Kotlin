@@ -6,12 +6,12 @@ import pl.refactoring.interpreter.legacy.specs.AndSpec;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static pl.refactoring.interpreter.legacy.specs.BelowAreaSpec.belowArea;
-import static pl.refactoring.interpreter.legacy.specs.BetweenAreaSpec.ofAreaRange;
-import static pl.refactoring.interpreter.legacy.specs.MaterialSpec.ofMaterial;
-import static pl.refactoring.interpreter.legacy.specs.NotSpec.not;
-import static pl.refactoring.interpreter.legacy.specs.PlacementSpec.placedIn;
-import static pl.refactoring.interpreter.legacy.specs.TypeSpec.ofType;
+import static pl.refactoring.interpreter.legacy.specs.Specs.ofAreaRange;
+import static pl.refactoring.interpreter.legacy.specs.Specs.not;
+import static pl.refactoring.interpreter.legacy.specs.Specs.placedIn;
+import static pl.refactoring.interpreter.legacy.specs.Specs.belowArea;
+import static pl.refactoring.interpreter.legacy.specs.Specs.ofMaterial;
+import static pl.refactoring.interpreter.legacy.specs.Specs.ofType;
 
 /**
  * Copyright (c) 2020 IT Train Wlodzimierz Krakowski (www.refactoring.pl)
