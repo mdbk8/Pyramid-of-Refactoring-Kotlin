@@ -1,6 +1,8 @@
 plugins {
     java
     kotlin("jvm") version "1.5.0"
+
+    id("info.solidsoft.pitest") version "1.6.0"
 }
 
 group = "org.example"
@@ -22,4 +24,21 @@ dependencies {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+}
+
+pitest {
+    //adds dependency to org.pitest:pitest-junit5-plugin and sets "testPlugin" to "junit5"
+    junit5PluginVersion.set("0.14")
+    timestampedReports.set(false)
+
+    targetClasses.set(listOf(
+        "pl.refactoring.interpreter.legacy.*"
+    ))
+    targetTests.set(listOf(
+        "pl.refactoring.interpreter.legacy.*"
+    ))
+
+    avoidCallsTo.set(listOf(
+        "kotlin.jvm.internal"
+    ))
 }
